@@ -17,7 +17,7 @@ public class Binary2CCodeGUI extends JFrame
 	private JFormattedTextField lineBreaksIntervalField;
 	private JTextField headerFileNameField;
 	private JTextField bufferVariableNameField;
-	private JTextField targetFolderPathField;
+	// private JTextField targetFolderPathField;
 	private JButton generateHeaderFileButton;
 	private JButton aboutButton;
 
@@ -66,11 +66,11 @@ public class Binary2CCodeGUI extends JFrame
 			lineBreaksIntervalField.setText(lineBreakInterval);
 		}
 
-		String targetFolderPath = simpleProperties.get(PersistentSetting.TARGET_FOLDER_PATH.toString());
+		/*String targetFolderPath = simpleProperties.get(PersistentSetting.TARGET_FOLDER_PATH.toString());
 		if (targetFolderPath != null)
 		{
 			targetFolderPathField.setText(targetFolderPath);
-		}
+		}*/
 	}
 
 	private void addPersistentSettingsBackupShutdownHook()
@@ -81,7 +81,7 @@ public class Binary2CCodeGUI extends JFrame
 			simpleProperties.put(PersistentSetting.HEADER_FILE_NAME.toString(), headerFileNameField.getText());
 			simpleProperties.put(PersistentSetting.BUFFER_VARIABLE_NAME.toString(), bufferVariableNameField.getText());
 			simpleProperties.put(PersistentSetting.LINE_BREAK_INTERVAL.toString(), lineBreaksIntervalField.getText());
-			simpleProperties.put(PersistentSetting.TARGET_FOLDER_PATH.toString(), targetFolderPathField.getText());
+			// simpleProperties.put(PersistentSetting.TARGET_FOLDER_PATH.toString(), targetFolderPathField.getText());
 			simpleProperties.writeToFile();
 		});
 
@@ -120,7 +120,7 @@ public class Binary2CCodeGUI extends JFrame
 			while (isShowing())
 			{
 				boolean canGenerate = validateField(sourceBinaryFilePathField, ValidationType.FILE)
-						& validateField(targetFolderPathField, ValidationType.FOLDER)
+						// & validateField(targetFolderPathField, ValidationType.FOLDER)
 						& validateField(headerFileNameField, ValidationType.VARIABLE_NAME)
 						& validateField(bufferVariableNameField, ValidationType.VARIABLE_NAME)
 						& validateField(lineBreaksIntervalField, ValidationType.INTEGER);
@@ -148,7 +148,7 @@ public class Binary2CCodeGUI extends JFrame
 		try
 		{
 			String text = textField.getText();
-			isValid = validationType.validate(text);
+			isValid = validationType.isValid(text);
 		} catch (Exception exception)
 		{
 			isValid = false;
@@ -169,9 +169,8 @@ public class Binary2CCodeGUI extends JFrame
 				String headerFileName = headerFileNameField.getText();
 				String bufferVariableName = bufferVariableNameField.getText();
 				int lineBreakIndex = Integer.parseInt(lineBreaksIntervalField.getText());
-				String targetFolderPath = targetFolderPathField.getText();
 				Binary2CCode binary2CCode = new Binary2CCode(sourceBinaryFilePath, headerFileName, bufferVariableName, lineBreakIndex);
-				File headerFile = binary2CCode.generate(targetFolderPath);
+				File headerFile = binary2CCode.generate();
 				JOptionPane.showMessageDialog(rootPanel,
 						"Header file generated!",
 						"Success",
@@ -185,11 +184,13 @@ public class Binary2CCodeGUI extends JFrame
 		});
 	}
 
+	public static final String APPLICATION_TITLE = "Binary2CCode";
+
 	private void setFrameProperties()
 	{
 		add(rootPanel);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setTitle("Binary2CCode");
+		setTitle(APPLICATION_TITLE);
 		WindowUtilities.setIconImage(this);
 		setLocationRelativeTo(null);
 		pack();

@@ -1,5 +1,10 @@
 package com.bullywiihacks.development;
 
+import com.bullywiihacks.development.swing.Binary2CCodeGUI;
+import com.bullywiihacks.development.swing.utilities.ProgramDirectoryUtilities;
+import com.bullywiihacks.development.swing.utilities.ValidationType;
+import org.apache.commons.cli.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -10,30 +15,27 @@ import java.nio.file.Paths;
 public class Binary2CCode
 {
 	private final String binaryFilePath;
-	private final String baseFileName;
+	private final String headerFileName;
 	private final String bufferVariableName;
 	private final int lineBreakInterval;
 
 	public Binary2CCode(String binaryFilePath,
-	                    String baseFileName,
+	                    String headerFileName,
 	                    String bufferVariableName,
 	                    int lineBreakInterval)
 	{
 		this.binaryFilePath = binaryFilePath;
-		this.baseFileName = baseFileName;
+		this.headerFileName = headerFileName;
 		this.bufferVariableName = bufferVariableName;
 		this.lineBreakInterval = lineBreakInterval;
 	}
 
-	public File generate(String targetDirectory) throws IOException
+	public File generate() throws IOException
 	{
 		Path binaryFile = Paths.get(binaryFilePath);
 		byte[] binaryFileBytes = Files.readAllBytes(binaryFile);
 
-		Path directoryPath = Paths.get(targetDirectory);
-		Files.createDirectories(directoryPath);
-
-		Path headerFilePath = directoryPath.resolve(baseFileName + ".h");
+		Path headerFilePath = Paths.get(ProgramDirectoryUtilities.getProgramDirectory() + File.separator + headerFileName);
 		byte[] generatedBytes = getHeaderFileBytes(binaryFileBytes);
 		Files.write(headerFilePath, generatedBytes);
 
@@ -44,6 +46,12 @@ public class Binary2CCode
 	{
 		StringBuilder bufferBuilder = new StringBuilder();
 		bufferBuilder.append("static const unsigned char ");
+
+		if (!ValidationType.VARIABLE_NAME.isValid(bufferVariableName))
+		{
+			throw new IllegalArgumentException("The buffer variable name " + bufferVariableName + " is not valid!");
+		}
+
 		bufferBuilder.append(bufferVariableName);
 		bufferBuilder.append("[] = {");
 		bufferBuilder.append(System.lineSeparator());
@@ -59,6 +67,11 @@ public class Binary2CCode
 			if (!isLastIndex)
 			{
 				bufferBuilder.append(",");
+			}
+
+			if (lineBreakInterval < 0)
+			{
+				throw new IllegalArgumentException("The line break interval was " + lineBreakInterval + " but cannot be negative!");
 			}
 
 			if (FormattingUtilities.shouldInsertLineSeparator(bytesIndex, lineBreakInterval) && !isLastIndex)
@@ -83,5 +96,72 @@ public class Binary2CCode
 		bufferBuilder.append(";");
 
 		return bufferBuilder.toString().getBytes(Charset.defaultCharset());
+	}
+
+	public static void runCommandLineInterface(String[] arguments)
+	{
+		Options options = new Options();
+
+		String inputBinaryArgument = "input-binary";
+		Option inputOption = new Option("i", inputBinaryArgument, true, "Input binary file");
+		inputOption.setRequired(true);
+		options.addOption(inputOption);
+
+		String headerFileNameArgument = "header-file-name";
+		Option outputOption = new Option("h", headerFileNameArgument, true, "Header file name");
+		outputOption.setRequired(true);
+		options.addOption(outputOption);
+
+		String lineBreakIntervalArgument = "line-break-interval";
+		Option lineBreakIntervalOption = new Option("l", lineBreakIntervalArgument, true, "The amount of bytes per line");
+		lineBreakIntervalOption.setRequired(true);
+		options.addOption(lineBreakIntervalOption);
+
+		String bufferVariableNameArgument = "buffer-variable-name";
+		Option bufferVariableNameOption = new Option("b", bufferVariableNameArgument, true, "The buffer's variable name");
+		bufferVariableNameOption.setRequired(true);
+		options.addOption(bufferVariableNameOption);
+
+		CommandLineParser parser = new DefaultParser();
+		HelpFormatter formatter = new HelpFormatter();
+		CommandLine command;
+
+		try
+		{
+			command = parser.parse(options, arguments);
+		} catch (ParseException exception)
+		{
+			String errorMessage = exception.getMessage();
+			System.out.println(errorMessage);
+
+			String helpMessage = "java -jar ";
+			if (ProgramDirectoryUtilities.isRunningFromJAR())
+			{
+				helpMessage += ProgramDirectoryUtilities.getJarName();
+			} else
+			{
+				helpMessage += Binary2CCodeGUI.APPLICATION_TITLE + ".jar";
+			}
+
+			formatter.printHelp(helpMessage, options);
+
+			System.exit(1);
+			return;
+		}
+
+		String inputBinaryFilePath = command.getOptionValue(inputBinaryArgument);
+		String outputHeaderFilePath = command.getOptionValue(headerFileNameArgument);
+		String bufferVariableName = command.getOptionValue(bufferVariableNameArgument);
+		int lineBreakIndex = Integer.parseInt(command.getOptionValue(lineBreakIntervalArgument));
+
+		Binary2CCode binary2CCode = new Binary2CCode(inputBinaryFilePath, outputHeaderFilePath, bufferVariableName, lineBreakIndex);
+
+		try
+		{
+			binary2CCode.generate();
+		} catch (IOException exception)
+		{
+			exception.printStackTrace();
+		}
 	}
 }

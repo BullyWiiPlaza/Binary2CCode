@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 public class ProgramDirectoryUtilities
 {
-	private static String getJarName()
+	public static String getJarName()
 	{
 		return new File(ProgramDirectoryUtilities.class.getProtectionDomain()
 				.getCodeSource()
@@ -14,15 +14,15 @@ public class ProgramDirectoryUtilities
 				.getName();
 	}
 
-	private static boolean runningFromJAR()
+	public static boolean isRunningFromJAR()
 	{
 		String jarName = getJarName();
-		return jarName.contains(".jar");
+		return !jarName.equals("classes");
 	}
 
 	public static String getProgramDirectory()
 	{
-		if (runningFromJAR())
+		if (isRunningFromJAR())
 		{
 			return getCurrentJARDirectory();
 		} else

@@ -9,7 +9,7 @@ public enum ValidationType
 {
 	FILE, FOLDER, VARIABLE_NAME, INTEGER;
 
-	public boolean validate(String input)
+	public boolean isValid(String input)
 	{
 		switch (this)
 		{
