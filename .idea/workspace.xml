@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1acb596e-87db-400a-a563-a488370c626f" name="Default" comment="Implement command line interface">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_cli_commons_cli_1_4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Binary2CCode.jar" afterPath="$PROJECT_DIR$/Binary2CCode.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/Binary2CCode_jar.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/Binary2CCode_jar.xml" />
+    <list default="true" id="1acb596e-87db-400a-a563-a488370c626f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Binary2CCode.iml" afterPath="$PROJECT_DIR$/Binary2CCode.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Binary2CCodeClient.java" afterPath="$PROJECT_DIR$/src/main/java/Binary2CCodeClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/Binary2CCode.java" afterPath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/Binary2CCode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/Binary2CCodeGUI.form" afterPath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/Binary2CCodeGUI.form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/Binary2CCodeGUI.java" afterPath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/Binary2CCodeGUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/utilities/ProgramDirectoryUtilities.java" afterPath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/utilities/ProgramDirectoryUtilities.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/utilities/ValidationType.java" afterPath="$PROJECT_DIR$/src/main/java/com/bullywiihacks/development/swing/utilities/ValidationType.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -117,8 +106,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="475">
-                <caret line="19" column="57" lean-forward="true" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
+              <first_editor relative-caret-position="50">
+                <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -877,7 +866,7 @@
       <workItem from="1493929915672" duration="367000" />
       <workItem from="1493931262075" duration="54000" />
       <workItem from="1493934304785" duration="501000" />
-      <workItem from="1493935097068" duration="2574000" />
+      <workItem from="1493935097068" duration="2631000" />
     </task>
     <task id="LOCAL-00001" summary="Remove Lombok">
       <created>1493907668847</created>
@@ -893,11 +882,18 @@
       <option name="project" value="LOCAL" />
       <updated>1493907935965</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Implement command line interface (and update readme)">
+      <created>1493937702344</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1493937702344</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14879000" />
+    <option name="totallyTimeSpent" value="14936000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -991,7 +987,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Remove Lombok" />
     <MESSAGE value="Add .iml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add .iml" />
+    <MESSAGE value="Implement command line interface (and update readme)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement command line interface (and update readme)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1356,8 +1353,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="475">
-            <caret line="19" column="57" lean-forward="true" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
+          <first_editor relative-caret-position="50">
+            <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
