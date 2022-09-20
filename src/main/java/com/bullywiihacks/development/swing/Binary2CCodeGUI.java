@@ -20,6 +20,7 @@ public class Binary2CCodeGUI extends JFrame
 	// private JTextField targetFolderPathField;
 	private JButton generateHeaderFileButton;
 	private JButton aboutButton;
+	private JCheckBox javaCheckBox;
 
 	private SimpleProperties simpleProperties;
 
@@ -169,7 +170,7 @@ public class Binary2CCodeGUI extends JFrame
 				String headerFileName = headerFileNameField.getText();
 				String bufferVariableName = bufferVariableNameField.getText();
 				int lineBreakIndex = Integer.parseInt(lineBreaksIntervalField.getText());
-				Binary2CCode binary2CCode = new Binary2CCode(sourceBinaryFilePath, headerFileName, bufferVariableName, lineBreakIndex);
+				Binary2CCode binary2CCode = new Binary2CCode(sourceBinaryFilePath, headerFileName, bufferVariableName, lineBreakIndex, javaCheckBox.isSelected());
 				File headerFile = binary2CCode.generate();
 				JOptionPane.showMessageDialog(rootPanel,
 						"Header file generated!",

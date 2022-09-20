@@ -18,16 +18,19 @@ public class Binary2CCode
 	private final String headerFileName;
 	private final String bufferVariableName;
 	private final int lineBreakInterval;
+	private final boolean isJava;
 
 	public Binary2CCode(String binaryFilePath,
 	                    String headerFileName,
 	                    String bufferVariableName,
-	                    int lineBreakInterval)
+	                    int lineBreakInterval,
+	                    boolean isJava)
 	{
 		this.binaryFilePath = binaryFilePath;
 		this.headerFileName = headerFileName;
 		this.bufferVariableName = bufferVariableName;
 		this.lineBreakInterval = lineBreakInterval;
+		this.isJava = isJava;
 	}
 
 	public File generate() throws IOException
@@ -45,20 +48,35 @@ public class Binary2CCode
 	private byte[] getHeaderFileBytes(byte[] binaryFileBytes)
 	{
 		StringBuilder bufferBuilder = new StringBuilder();
-		bufferBuilder.append("static const unsigned char ");
 
 		if (!ValidationType.VARIABLE_NAME.isValid(bufferVariableName))
 		{
 			throw new IllegalArgumentException("The buffer variable name " + bufferVariableName + " is not valid!");
 		}
 
-		bufferBuilder.append(bufferVariableName);
-		bufferBuilder.append("[] = {");
+		if (isJava)
+		{
+			bufferBuilder.append("byte[] ");
+			bufferBuilder.append(bufferVariableName);
+		} else
+		{
+			bufferBuilder.append("static const unsigned char ");
+			bufferBuilder.append(bufferVariableName);
+			bufferBuilder.append("[]");
+		}
+
+		bufferBuilder.append(" = {");
 		bufferBuilder.append(System.lineSeparator());
 
 		for (int bytesIndex = 0; bytesIndex < binaryFileBytes.length; bytesIndex++)
 		{
 			byte singleByte = binaryFileBytes[bytesIndex];
+
+			if (isJava && singleByte < 0)
+			{
+				bufferBuilder.append("(byte) ");
+			}
+
 			bufferBuilder.append("0x");
 			bufferBuilder.append(String.format("%02X", singleByte));
 
@@ -85,15 +103,19 @@ public class Binary2CCode
 
 		bufferBuilder.append(System.lineSeparator());
 		bufferBuilder.append("};");
-		bufferBuilder.append(System.lineSeparator());
-		bufferBuilder.append(System.lineSeparator());
-		bufferBuilder.append("static const unsigned int ");
-		bufferBuilder.append(bufferVariableName);
-		bufferBuilder.append("Length");
-		bufferBuilder.append(" = ");
-		bufferBuilder.append("0x");
-		bufferBuilder.append(Integer.toHexString(binaryFileBytes.length).toUpperCase());
-		bufferBuilder.append(";");
+
+		if (!isJava)
+		{
+			bufferBuilder.append(System.lineSeparator());
+			bufferBuilder.append(System.lineSeparator());
+			bufferBuilder.append("static const unsigned int ");
+			bufferBuilder.append(bufferVariableName);
+			bufferBuilder.append("Length");
+			bufferBuilder.append(" = ");
+			bufferBuilder.append("0x");
+			bufferBuilder.append(Integer.toHexString(binaryFileBytes.length).toUpperCase());
+			bufferBuilder.append(";");
+		}
 
 		return bufferBuilder.toString().getBytes(Charset.defaultCharset());
 	}
@@ -154,7 +176,7 @@ public class Binary2CCode
 		String bufferVariableName = command.getOptionValue(bufferVariableNameArgument);
 		int lineBreakIndex = Integer.parseInt(command.getOptionValue(lineBreakIntervalArgument));
 
-		Binary2CCode binary2CCode = new Binary2CCode(inputBinaryFilePath, outputHeaderFilePath, bufferVariableName, lineBreakIndex);
+		Binary2CCode binary2CCode = new Binary2CCode(inputBinaryFilePath, outputHeaderFilePath, bufferVariableName, lineBreakIndex, false);
 
 		try
 		{

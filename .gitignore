@@ -1,3 +1,7 @@
 /target
 /codehandler.bin
 /config.properties
+/assembly
+/code_handler
+/*.iml
+the_header.h
